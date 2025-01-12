@@ -25,7 +25,6 @@ module.exports = {
         filename: "[name]-[contenthash].bundle.js",
         assetModuleFilename: "asset-packs/[name]-[hash][ext][query]",
         clean: true,
-        publicPath: "/firstgame",
     },
     module: {
         rules: [
