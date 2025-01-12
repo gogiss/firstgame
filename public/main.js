@@ -1,5 +1,5 @@
 import "./style.css";
-import Phaser from "phaser";
+import Phaser from "./phaser";
 
 const sizes = {
   width: 500,
