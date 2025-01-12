@@ -63,14 +63,6 @@ module.exports = {
             minify: false
         }),
         new CleanWebpackPlugin(),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: path.resolve(__dirname, 'public/assets'),
-                    to: 'assets',
-                },
-            ],
-        }),
         new webpack.HotModuleReplacementPlugin(),
     ]
 };
