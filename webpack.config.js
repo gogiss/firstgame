@@ -7,7 +7,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-        main: "./public/main.js"
+        main: "/src/main.js"
     },
     optimization: {
         splitChunks: {
@@ -63,6 +63,14 @@ module.exports = {
             minify: false
         }),
         new CleanWebpackPlugin(),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/assets'),
+                    to: 'assets',
+                },
+            ],
+        }),
         new webpack.HotModuleReplacementPlugin(),
     ]
 };
