@@ -66,15 +66,24 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./dist
+          
+      - name: Deploy to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: deploy
+          publish_dir: dist
+          keep_files: false
+          force_orphan: true
 
   # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+#  deploy:
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment.outputs.page_url }}
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v1
