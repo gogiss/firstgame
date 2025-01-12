@@ -7,7 +7,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-        main: "./src/index.ts"
+        main: "./public/main.js"
     },
     optimization: {
         splitChunks: {
@@ -27,6 +27,15 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.css$/, // Regex to target CSS files
+                use: ['style-loader', 'css-loader'], // Apply the style-loader and css-loader
+                exclude: /node_modules/,
+            },
+            // {
+            //     test: /\.(png|svg|jpg|jpeg|gif)$/, // Handle image files (optional)
+            //     use: ['file-loader'],
+            // },
             {
                 test: /\.tsx?$/,
                 use: "ts-loader",
@@ -54,20 +63,17 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src/index.html"),
+            template: path.join(__dirname, "index.html"),
             minify: false
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin({
             patterns: [
                 {
-                    from: "static",
-                    globOptions: {
-                        // asset pack files are imported in code as modules
-                        ignore: ["**/publicroot", "**/*-pack.json"]
-                    }
-                }
-            ]
+                    from: path.resolve(__dirname, 'public/assets'), // Source folder with assets
+                    to: 'public/assets', // Target folder in dist/
+                },
+            ],
         }),
         new webpack.HotModuleReplacementPlugin(),
     ]
