@@ -24,7 +24,6 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "[name]-[contenthash].bundle.js",
         assetModuleFilename: "asset-packs/[name]-[hash][ext][query]",
-        publicPath: "/firstgame/",
     },
     module: {
         rules: [
