@@ -70,8 +70,8 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.resolve(__dirname, 'public/assets'), // Source folder with assets
-                    to: 'public/assets', // Target folder in dist/
+                    from: path.resolve(__dirname, 'public/assets'),
+                    to: './',
                 },
             ],
         }),
