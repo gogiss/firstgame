@@ -2,6 +2,7 @@
   "name": "applegame",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://gogiss.github.io/firstgame",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
