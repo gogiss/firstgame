@@ -32,10 +32,6 @@ module.exports = {
                 use: ['style-loader', 'css-loader'], // Apply the style-loader and css-loader
                 exclude: /node_modules/,
             },
-            // {
-            //     test: /\.(png|svg|jpg|jpeg|gif)$/, // Handle image files (optional)
-            //     use: ['file-loader'],
-            // },
             {
                 test: /\.tsx?$/,
                 use: "ts-loader",
@@ -71,7 +67,7 @@ module.exports = {
             patterns: [
                 {
                     from: path.resolve(__dirname, 'public/assets'),
-                    to: './',
+                    to: 'assets',
                 },
             ],
         }),
