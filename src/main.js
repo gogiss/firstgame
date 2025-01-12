@@ -47,11 +47,21 @@ class GameScene extends Phaser.Scene {
     this.bgMusic.play();
 
     this.add.image(0, 0, 'bg').setOrigin(0, 0);
-    this.player = this.physics.add.image(0, sizes.height - 100, 'basket').setOrigin(0, 0);
+
+    this.player = this.physics.add.sprite(0, sizes.height - 100, 'basket').setOrigin(0, 0);
     this.player.setImmovable(true);
     this.player.body.allowGravity = false;
     this.player.setCollideWorldBounds(true);
     this.player.setSize(this.player.width - this.player.width / 4, this.player.height / 6).setOffset(this.player.width / 10, this.player.height - this.player.height / 10);
+
+    this.player.setInteractive();
+    this.input.setDraggable(this.player);
+
+    // Dragging
+    this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+      gameObject.x = dragX;
+      gameObject.y = gameObject.y;
+    });
 
     this.target = this.physics.add.image(0, 0, 'apple').setOrigin(0, 0);
     this.target.setMaxVelocity(0, speedDown);
@@ -133,6 +143,9 @@ const config = {
   type: Phaser.WEBGL,
   width: sizes.width,
   height: sizes.height,
+  scale: {
+    mode: Phaser.Scale.FIT, // Scale the game while maintaining aspect ratio
+  },
   canvas: gameCanvas,
   physics: {
     default: "arcade",
@@ -141,12 +154,15 @@ const config = {
       debug: true,
     },
   },
+  input: {
+    activePointers: 1
+  },
   scene: [GameScene],
 };
 
 const game = new Phaser.Game(config);
 
 gameStartBtn.addEventListener('click', () => {
-  gameStartDiv.style.display='none';
+  gameStartDiv.style.display = 'none';
   game.scene.resume('scene-game');
 });
