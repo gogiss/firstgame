@@ -18,7 +18,7 @@ class MainMenu extends Phaser.Scene {
 
         this.add.image(0, 0, "background").setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-        const playButton = this.add.text(0, -30, 'Play', {
+        const playButton = this.add.text(0, 0, 'Play', {
             fontSize: '24px',
             fontStyle: 'bold',
             backgroundColor: '#4CAF50',
@@ -28,7 +28,7 @@ class MainMenu extends Phaser.Scene {
         }).setOrigin(0.5).setInteractive();
 
         const container = this.add.container(centerX, centerY, [playButton]);
-        const background = this.add.rectangle(0, 0, 200, 120, 0x000000, 0.5);
+        const background = this.add.rectangle(0, 0, 200, 60, 0x000000, 0.5);
         container.addAt(background, 0);
 
         playButton.on('pointerdown', () => {
