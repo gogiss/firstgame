@@ -196,11 +196,11 @@ class AppleCatcher extends Phaser.Scene {
     });
     
     backToMainMenuButton.on('pointerover', () => {
-      restartButton.setStyle({ backgroundColor: '#45a049' });
+      backToMainMenuButton.setStyle({ backgroundColor: '#45a049' });
     });
 
     backToMainMenuButton.on('pointerout', () => {
-      restartButton.setStyle({ backgroundColor: '#4CAF50' });
+      backToMainMenuButton.setStyle({ backgroundColor: '#4CAF50' });
     });
 
     const container = this.add.container(centerX, centerY, [gameEndTitleText, winLoseText, finalScoreText, restartButton, backToMainMenuButton]);
