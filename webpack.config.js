@@ -7,7 +7,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-        main: "/src/main.js"
+        // main: "/src/main.js"
     },
     optimization: {
         splitChunks: {
@@ -29,8 +29,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/, // Regex to target CSS files
-                use: ['style-loader', 'css-loader'], // Apply the style-loader and css-loader
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
                 exclude: /node_modules/,
             },
             {
@@ -69,6 +69,13 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, 'src/assets'),
                     to: 'assets',
+                },
+            ],
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'game.html'),
                 },
             ],
         }),
