@@ -39,9 +39,10 @@ class AppleCatcher extends Phaser.Scene {
     this.player.setImmovable(true);
     this.player.body.allowGravity = false;
     this.player.setCollideWorldBounds(true);
-    this.player.setSize(this.cameras.main.width / 10, this.cameras.main.height / 10)
-      .setOffset(this.player.width / 10, this.player.height - this.player.height / 10)
-      .setPosition(this.cameras.main.width / 2, this.cameras.main.height);
+    this.player.setPosition(this.cameras.main.width / 2, this.cameras.main.height);
+
+    const scale = Math.max(this.cameras.main.width / this.player.width * 0.1, this.cameras.main.height / this.player.height * 0.1);
+    this.player.setScale(scale);
 
     this.player.setInteractive();
     this.player.setDepth(10);
@@ -54,11 +55,12 @@ class AppleCatcher extends Phaser.Scene {
 
     this.target = this.physics.add.image(this.cameras.main.width / 2, 0, 'apple').setOrigin(0, 0);
     this.target.setMaxVelocity(0, this.speedDown);
+    this.target.setScale(scale);
 
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
     this.cursor = this.input.keyboard.createCursorKeys();
-    
+
     //Need to make font sizes match screen size
     this.textScore = this.add.text(this.cameras.main.width - 120, 10, "Score: 0", {
       font: "25px Arial",
@@ -194,7 +196,7 @@ class AppleCatcher extends Phaser.Scene {
       this.scene.start('MainMenu');
       this.scene.stop();
     });
-    
+
     backToMainMenuButton.on('pointerover', () => {
       backToMainMenuButton.setStyle({ backgroundColor: '#45a049' });
     });

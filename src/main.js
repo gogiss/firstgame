@@ -9,7 +9,7 @@ const config = {
     type: Phaser.WEBGL,
     scale: {
         mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     },
     canvas: gameCanvas,
     physics: {
@@ -29,3 +29,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
+window.addEventListener('resize', () => {
+    game.scale.resize(window.innerWidth, window.innerHeight);
+});
