@@ -39,13 +39,14 @@ class AppleCatcher extends Phaser.Scene {
     this.player.setImmovable(true);
     this.player.body.allowGravity = false;
     this.player.setCollideWorldBounds(true);
-    this.player.setSize(this.cameras.main.width / 10, this.cameras.main.height / 10).setOffset(this.player.width / 10, this.player.height - this.player.height / 10).setPosition(this.cameras.main.width / 2, this.cameras.main.height - this.player.height);
+    this.player.setSize(this.cameras.main.width / 10, this.cameras.main.height / 10)
+      .setOffset(this.player.width / 10, this.player.height - this.player.height / 10)
+      .setPosition(this.cameras.main.width / 2, this.cameras.main.height);
 
     this.player.setInteractive();
     this.player.setDepth(10);
     this.input.setDraggable(this.player);
 
-    // Dragging
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
       gameObject.x = dragX;
       gameObject.y = gameObject.y;
@@ -69,7 +70,7 @@ class AppleCatcher extends Phaser.Scene {
     });
 
     this.startTime = this.time.now;
-    this.timerDuration = 30000;
+    this.timerDuration = 3000;
 
     this.emitter = this.add.particles(0, 0, 'money', {
       speed: 100,
@@ -120,6 +121,8 @@ class AppleCatcher extends Phaser.Scene {
 
   gameOver() {
     this.target.destroy(true);
+    this.input.removeAllListeners();
+    this.input.setDraggable(this.player, false);
     this.player.disableBody();
     this.time.removeAllEvents();
 
@@ -163,6 +166,7 @@ class AppleCatcher extends Phaser.Scene {
     restartButton.setDepth(20);
 
     restartButton.on('pointerdown', () => {
+      this.bgMusic.destroy();
       this.points = 0;
 
       this.scene.restart('scene-game');

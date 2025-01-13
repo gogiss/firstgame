@@ -17,7 +17,6 @@ class AppleCatcherStart extends Phaser.Scene {
 
     this.add.image(0, 0, 'bg').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-    // Position and add text elements (H1 and paragraph equivalents)
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
