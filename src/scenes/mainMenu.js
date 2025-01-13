@@ -26,17 +26,8 @@ class MainMenu extends Phaser.Scene {
             padding: { x: 10, y: 5 },
             align: 'center'
         }).setOrigin(0.5).setInteractive();
-        
-        const homePageButton = this.add.text(0, 30, 'Home Page', {
-            fontSize: '24px',
-            fontStyle: 'bold',
-            backgroundColor: '#4CAF50',
-            color: '#fff',
-            padding: { x: 10, y: 5 },
-            align: 'center'
-        }).setOrigin(0.5).setInteractive();
 
-        const container = this.add.container(centerX, centerY, [playButton, homePageButton]);
+        const container = this.add.container(centerX, centerY, [playButton]);
         const background = this.add.rectangle(0, 0, 200, 120, 0x000000, 0.5);
         container.addAt(background, 0);
 
@@ -54,18 +45,6 @@ class MainMenu extends Phaser.Scene {
 
         playButton.on('pointerout', () => {
             playButton.setStyle({ backgroundColor: '#4CAF50' });
-        });
-
-        homePageButton.on('pointerdown', () => {
-            window.location.href = '/index.html';
-        });
-
-        homePageButton.on('pointerover', () => {
-            homePageButton.setStyle({ backgroundColor: '#45a049' });
-        });
-
-        homePageButton.on('pointerout', () => {
-            homePageButton.setStyle({ backgroundColor: '#4CAF50' });
         });
     }
 }
