@@ -74,7 +74,8 @@ class AppleCatcher extends Phaser.Scene {
       fill: "#000000",
     });
 
-    this.timedEvent = this.time.delayedCall(30000, this.gameOver, [], this);
+    this.startTime = this.time.now;
+    this.timerDuration = 30000;
 
     this.emitter = this.add.particles(0, 0, 'money', {
       speed: 100,
@@ -87,8 +88,12 @@ class AppleCatcher extends Phaser.Scene {
   }
 
   update() {
-    this.remainingTime = this.timedEvent.getRemainingSeconds();
-    this.textTime.setText(`Remaining Time: ${this.remainingTime.toPrecision(3)}`);
+    const elapsedTime = this.time.now - this.startTime;
+    this.remainingTime = Math.max(0, this.timerDuration - elapsedTime);
+    this.textTime.setText(`Remaining Time: ${Math.ceil(this.remainingTime / 1000)} seconds`);
+    if (this.remainingTime <= 0) {
+        this.gameOver();
+    }
 
     if (this.target.y >= sizes.height) {
       this.target.setY(0);
@@ -121,6 +126,7 @@ class AppleCatcher extends Phaser.Scene {
 
   gameOver() {
     this.target.destroy(true);
+    this.time.removeAllEvents();
 
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;

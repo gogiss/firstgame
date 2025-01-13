@@ -12,7 +12,7 @@ const speedDown = 150;
 const config = {
     type: Phaser.WEBGL,
     width: sizes.width,
-    height: sizes.height,
+    height: sizes.height + 10,//window.innerHeight - 100
     scale: {
         mode: Phaser.Scale.FIT, // Scale the game while maintaining aspect ratio
     },
