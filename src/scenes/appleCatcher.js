@@ -58,7 +58,8 @@ class AppleCatcher extends Phaser.Scene {
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
     this.cursor = this.input.keyboard.createCursorKeys();
-
+    
+    //Need to make font sizes match screen size
     this.textScore = this.add.text(this.cameras.main.width - 120, 10, "Score: 0", {
       font: "25px Arial",
       fill: "#000000",
@@ -70,7 +71,7 @@ class AppleCatcher extends Phaser.Scene {
     });
 
     this.startTime = this.time.now;
-    this.timerDuration = 3000;
+    this.timerDuration = 30000;
 
     this.emitter = this.add.particles(0, 0, 'money', {
       speed: 100,
@@ -129,39 +130,34 @@ class AppleCatcher extends Phaser.Scene {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    // Game Over text
-    this.add.text(centerX, centerY - 100, 'Game Over', {
+    const gameEndTitleText = this.add.text(0, -100, 'Game Ended', {
       fontSize: '48px',
       fontStyle: 'bold',
-      color: '#ff0000',
+      // color: '#ff0000',
       align: 'center',
     }).setOrigin(0.5);
 
-    // Win/Lose Text
     // Need to add music according to win/loss
-    const winLoseText = this.points >= 10 ? 'Win!' : 'Lose!';
-    this.add.text(centerX, centerY - 30, `You ${winLoseText}`, {
+    const winLoseText = this.add.text(0, -30, `You ${this.points >= 10 ? 'Win!' : 'Lose!'}`, {
       fontSize: '32px',
       fontStyle: 'bold',
       align: 'center',
     }).setOrigin(0.5);
 
-    // Final Score Text
-    this.add.text(centerX, centerY + 30, `Final Score: ${this.points}`, {
+    const finalScoreText = this.add.text(0, 30, `Final Score: ${this.points}`, {
       fontSize: '24px',
       color: '#ffffff',
       align: 'center',
     }).setOrigin(0.5);
 
-    // Add button to go back to the main menu or restart
-    const restartButton = this.add.text(centerX, centerY + 150, 'Restart Game', {
+    const restartButton = this.add.text(0, 150, 'Restart Game', {
       fontSize: '24px',
       fontStyle: 'bold',
       backgroundColor: '#4CAF50',
       color: '#fff',
       padding: { x: 10, y: 5 },
       align: 'center'
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    }).setOrigin(0.5).setInteractive();
 
     restartButton.setDepth(20);
 
@@ -172,7 +168,6 @@ class AppleCatcher extends Phaser.Scene {
       this.scene.restart('scene-game');
     });
 
-    // Optional: Add hover effects to the button
     restartButton.on('pointerover', () => {
       restartButton.setStyle({ backgroundColor: '#45a049' });
     });
@@ -180,6 +175,38 @@ class AppleCatcher extends Phaser.Scene {
     restartButton.on('pointerout', () => {
       restartButton.setStyle({ backgroundColor: '#4CAF50' });
     });
+
+    const backToMainMenuButton = this.add.text(0, 200, 'To Game Select', {
+      fontSize: '24px',
+      fontStyle: 'bold',
+      backgroundColor: '#4CAF50',
+      color: '#fff',
+      padding: { x: 10, y: 5 },
+      align: 'center'
+    }).setOrigin(0.5).setInteractive();
+
+    backToMainMenuButton.setDepth(20);
+
+    backToMainMenuButton.on('pointerdown', () => {
+      this.bgMusic.destroy();
+      this.points = 0;
+
+      this.scene.start('MainMenu');
+      this.scene.stop();
+    });
+    
+    backToMainMenuButton.on('pointerover', () => {
+      restartButton.setStyle({ backgroundColor: '#45a049' });
+    });
+
+    backToMainMenuButton.on('pointerout', () => {
+      restartButton.setStyle({ backgroundColor: '#4CAF50' });
+    });
+
+    const container = this.add.container(centerX, centerY, [gameEndTitleText, winLoseText, finalScoreText, restartButton, backToMainMenuButton]);
+    const background = this.add.rectangle(0, 0, this.cameras.main.width * 0.25, this.cameras.main.height * 0.75, 0x000000, 0.5);
+    container.addAt(background, 0);
+    container.setDepth(15);
   }
 }
 

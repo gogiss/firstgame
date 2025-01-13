@@ -2,7 +2,8 @@ import MainMenu from './scenes/mainMenu.js';
 import AppleCatcherStart from './scenes/appleCatcherStart.js';
 import AppleCatcher from './scenes/appleCatcher.js';
 
-const speedDown = 600;
+const speedDown = 200;
+//Need to fix game resize after switching landscape/portrait
 
 const config = {
     type: Phaser.WEBGL,
