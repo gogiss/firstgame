@@ -71,8 +71,15 @@ class AppleCatcher extends Phaser.Scene {
       fill: "#000000",
     });
 
-    this.startTime = this.time.now;
-    this.timerDuration = 10000;
+
+    this.timerDuration = 30000;
+    this.remainingTime = this.timerDuration;
+    this.timerEvent = this.time.addEvent({
+      delay: this.timerDuration,
+      callback: this.gameOver,
+      callbackScope: this,
+      loop: false
+    });
 
     this.emitter = this.add.particles(0, 0, 'money', {
       speed: 100,
@@ -85,7 +92,7 @@ class AppleCatcher extends Phaser.Scene {
   }
 
   update() {
-    const elapsedTime = this.time.now - this.startTime;
+    const elapsedTime = this.timerEvent.getElapsed();
     this.remainingTime = Math.max(0, this.timerDuration - elapsedTime);
     this.textTime.setText(`Remaining Time: ${Math.ceil(this.remainingTime / 1000)} seconds`);
     if (this.remainingTime <= 0) {
@@ -132,14 +139,14 @@ class AppleCatcher extends Phaser.Scene {
     const centerY = this.cameras.main.centerY;
     const cameraWidth = this.cameras.main.width;
     const cameraHeight = this.cameras.main.height;
-    
+
     // Define container dimensions dynamically
     const containerWidth = cameraWidth * 0.8; // 80% of the screen width
     const containerHeight = cameraHeight * 0.6; // 60% of the screen height
-    
+
     // Add a semi-transparent background to the container
     const background = this.add.rectangle(0, 0, containerWidth, containerHeight, 0x000000, 0.5).setOrigin(0.5);
-    
+
     // Text styles and positioning
     const textStyle = {
       fontSize: `${Math.round(cameraHeight * 0.05)}px`, // 5% of screen height for font size
@@ -147,16 +154,16 @@ class AppleCatcher extends Phaser.Scene {
       color: '#ffffff',
       align: 'center',
     };
-    
+
     const gameEndTitleText = this.add.text(0, -containerHeight * 0.4, 'Game Ended', {
       ...textStyle,
       fontSize: `${Math.round(cameraHeight * 0.06)}px`, // Slightly larger font for the title
     }).setOrigin(0.5);
-    
+
     const winLoseText = this.add.text(0, -containerHeight * 0.2, `You ${this.points >= 10 ? 'Win!' : 'Lose!'}`, textStyle).setOrigin(0.5);
-    
+
     const finalScoreText = this.add.text(0, 0, `Final Score: ${this.points}`, textStyle).setOrigin(0.5);
-    
+
     // Button styles
     const buttonStyle = {
       fontSize: `${Math.round(cameraHeight * 0.04)}px`, // Button font size (4% of screen height)
@@ -166,29 +173,29 @@ class AppleCatcher extends Phaser.Scene {
       padding: { x: cameraWidth * 0.02, y: cameraHeight * 0.01 }, // Dynamic padding
       align: 'center',
     };
-    
+
     const restartButton = this.add.text(0, containerHeight * 0.2, 'Restart Game', buttonStyle)
       .setOrigin(0.5)
       .setInteractive();
-    
+
     restartButton.on('pointerdown', () => {
       this.bgMusic.destroy();
       this.points = 0;
       this.scene.restart('scene-game');
     });
-    
+
     restartButton.on('pointerover', () => {
       restartButton.setStyle({ backgroundColor: '#45a049' });
     });
-    
+
     restartButton.on('pointerout', () => {
       restartButton.setStyle({ backgroundColor: '#4CAF50' });
     });
-    
+
     const backToMainMenuButton = this.add.text(0, containerHeight * 0.35, 'To Game Select', buttonStyle)
       .setOrigin(0.5)
       .setInteractive();
-    
+
     backToMainMenuButton.on('pointerdown', () => {
       this.bgMusic.destroy();
       this.points = 0;
@@ -196,15 +203,15 @@ class AppleCatcher extends Phaser.Scene {
       this.scene.stop('scene-game');
       this.scene.start('MainMenu');
     });
-    
+
     backToMainMenuButton.on('pointerover', () => {
       backToMainMenuButton.setStyle({ backgroundColor: '#45a049' });
     });
-    
+
     backToMainMenuButton.on('pointerout', () => {
       backToMainMenuButton.setStyle({ backgroundColor: '#4CAF50' });
     });
-    
+
     // Create container and add all elements
     const container = this.add.container(centerX, centerY, [
       background,
@@ -214,7 +221,7 @@ class AppleCatcher extends Phaser.Scene {
       restartButton,
       backToMainMenuButton,
     ]);
-    
+
     // Scale the container to fit the screen
     container.setSize(containerWidth, containerHeight);
     container.setDepth(15);
