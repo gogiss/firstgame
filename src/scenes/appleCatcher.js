@@ -134,7 +134,7 @@ class AppleCatcher extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Win/Lose Text
-    const winLoseText = this.hasWon ? 'Win!' : 'Lose!';
+    const winLoseText = this.points >= 10 ? 'Win!' : 'Lose!';
     this.add.text(centerX, centerY - 30, `You ${winLoseText}`, {
       fontSize: '32px',
       fontStyle: 'bold',
@@ -157,6 +157,8 @@ class AppleCatcher extends Phaser.Scene {
       padding: { x: 10, y: 5 },
       align: 'center'
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+    restartButton.setDepth(20);
 
     restartButton.on('pointerdown', () => {
       this.scene.restart('scene-game');
