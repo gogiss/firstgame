@@ -2,19 +2,13 @@ import MainMenu from './scenes/mainMenu.js';
 import AppleCatcherStart from './scenes/appleCatcherStart.js';
 import AppleCatcher from './scenes/appleCatcher.js';
 
-const sizes = {
-    width: 500,
-    height: 500,
-};
-
-const speedDown = 150;
+const speedDown = 600;
 
 const config = {
     type: Phaser.WEBGL,
-    width: sizes.width,
-    height: sizes.height + 10,//window.innerHeight - 100
     scale: {
-        mode: Phaser.Scale.FIT, // Scale the game while maintaining aspect ratio
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     canvas: gameCanvas,
     physics: {

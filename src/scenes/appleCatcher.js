@@ -1,19 +1,11 @@
 import "../style.css";
 import Phaser from "phaser";
 
-const sizes = {
-  width: 500,
-  height: 500,
-};
-
-const speedDown = 150;
-
 class AppleCatcher extends Phaser.Scene {
   constructor() {
     super("scene-game");
     this.player;
     this.cursor;
-    this.playerSpeed = speedDown + 50;
     this.target;
     this.points = 0;
     this.textScore;
@@ -39,13 +31,15 @@ class AppleCatcher extends Phaser.Scene {
     this.bgMusic = this.sound.add('bgMusic');
     this.bgMusic.play();
 
-    this.add.image(0, 0, 'bg').setOrigin(0, 0);
+    this.add.image(0, 0, 'bg').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-    this.player = this.physics.add.sprite(0, sizes.height - 100, 'basket').setOrigin(0, 0);
+    this.speedDown = this.cameras.main.height / 2;
+    this.playerSpeed = this.cameras.main.width / 1.8;
+    this.player = this.physics.add.sprite(0, 0, 'basket').setOrigin(0, 0);
     this.player.setImmovable(true);
     this.player.body.allowGravity = false;
     this.player.setCollideWorldBounds(true);
-    this.player.setSize(this.player.width - this.player.width / 4, this.player.height / 6).setOffset(this.player.width / 10, this.player.height - this.player.height / 10);
+    this.player.setSize(this.cameras.main.width / 10, this.cameras.main.height / 10).setOffset(this.player.width / 10, this.player.height - this.player.height / 10).setPosition(this.cameras.main.width / 2, this.cameras.main.height - this.player.height);
 
     this.player.setInteractive();
     this.player.setDepth(10);
@@ -57,14 +51,14 @@ class AppleCatcher extends Phaser.Scene {
       gameObject.y = gameObject.y;
     });
 
-    this.target = this.physics.add.image(0, 0, 'apple').setOrigin(0, 0);
-    this.target.setMaxVelocity(0, speedDown);
+    this.target = this.physics.add.image(this.cameras.main.width / 2, 0, 'apple').setOrigin(0, 0);
+    this.target.setMaxVelocity(0, this.speedDown);
 
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
     this.cursor = this.input.keyboard.createCursorKeys();
 
-    this.textScore = this.add.text(sizes.width - 120, 10, "Score: 0", {
+    this.textScore = this.add.text(this.cameras.main.width - 120, 10, "Score: 0", {
       font: "25px Arial",
       fill: "#000000",
     });
@@ -79,7 +73,7 @@ class AppleCatcher extends Phaser.Scene {
 
     this.emitter = this.add.particles(0, 0, 'money', {
       speed: 100,
-      gravityY: speedDown - 200,
+      gravityY: this.speedDown - 200,
       scale: 0.04,
       duration: 100,
       emitting: false,
@@ -92,10 +86,10 @@ class AppleCatcher extends Phaser.Scene {
     this.remainingTime = Math.max(0, this.timerDuration - elapsedTime);
     this.textTime.setText(`Remaining Time: ${Math.ceil(this.remainingTime / 1000)} seconds`);
     if (this.remainingTime <= 0) {
-        this.gameOver();
+      this.gameOver();
     }
 
-    if (this.target.y >= sizes.height) {
+    if (this.target.y >= this.cameras.main.height) {
       this.target.setY(0);
       this.target.setX(this.getRandomX());
     }
@@ -112,7 +106,7 @@ class AppleCatcher extends Phaser.Scene {
   }
 
   getRandomX() {
-    return Math.floor(Math.random() * 400);
+    return Math.floor(Math.random() * this.cameras.main.width * 0.9);
   }
 
   targetHit() {
@@ -126,6 +120,7 @@ class AppleCatcher extends Phaser.Scene {
 
   gameOver() {
     this.target.destroy(true);
+    this.player.disableBody();
     this.time.removeAllEvents();
 
     const centerX = this.cameras.main.centerX;
@@ -140,6 +135,7 @@ class AppleCatcher extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Win/Lose Text
+    // Need to add music according to win/loss
     const winLoseText = this.points >= 10 ? 'Win!' : 'Lose!';
     this.add.text(centerX, centerY - 30, `You ${winLoseText}`, {
       fontSize: '32px',
@@ -167,6 +163,8 @@ class AppleCatcher extends Phaser.Scene {
     restartButton.setDepth(20);
 
     restartButton.on('pointerdown', () => {
+      this.points = 0;
+
       this.scene.restart('scene-game');
     });
 

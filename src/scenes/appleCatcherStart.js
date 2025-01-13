@@ -15,7 +15,7 @@ class AppleCatcherStart extends Phaser.Scene {
     this.bgMusic = this.sound.add('bgMusic');
     this.bgMusic.play();
 
-    this.add.image(0, 0, 'bg').setOrigin(0, 0);
+    this.add.image(0, 0, 'bg').setOrigin(0, 0).setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
     // Position and add text elements (H1 and paragraph equivalents)
     const centerX = this.cameras.main.centerX;
